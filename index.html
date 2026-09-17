@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="KuverPOS: internet olmadan da çalışan çok şubeli restoran otomasyon sistemi. Adisyon, mutfak fişi, parçalı ödeme, garson teslimi ve gün sonu tek sistemde.">
+<meta name="theme-color" content="#101413">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KuverPOS — İnternet gitti. Adisyon durmadı.">
+<meta property="og:description" content="Çok şubeli restoran otomasyon sistemi. Şubede çalışır, bulutta değil.">
+<meta property="og:url" content="https://kuverpos.com/">
+<link rel="canonical" href="https://kuverpos.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%23101413%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2234%22%20font-weight%3D%22800%22%20text-anchor%3D%22middle%22%20fill%3D%22%2358c2b2%22%3EK%3C%2Ftext%3E%3C%2Fsvg%3E">
+<title>KuverPOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* ------------------------------------------------------------------
+     KuverPOS — kurumsal tanitim sayfasi
+     Palet: termal kagit, murekkep, celik, petrol yesili aksan.
+     Gece bandi (hero + kapanis) her iki temada da koyu kalir; bilincli
+     bir tasarim karari, tema hatasi degil — renkleri sabit token'dan alir.
+     Durum renkleri (iyi/uyari) aksandan ayridir; urunde bilgi tasir.
+     ------------------------------------------------------------------ */
+
+  :root {
+    --kagit: #f4f3ef;
+    --kagit-2: #eae7df;
+    --yuzey: #ffffff;
+    --murekkep: #17191b;
+    --murekkep-2: #414749;
+    --celik: #6b7176;
+    --cizgi: #dbd7cd;
+    --cizgi-koyu: #bdb8ab;
+    --petrol: #0e4f4a;
+    --petrol-parlak: #146d66;
+    --petrol-sis: #e3ecea;
+    --iyi: #2c7a4f;
+    --iyi-sis: #e3f0e7;
+    --uyari: #8f6200;
+    --uyari-sis: #f6eddb;
+
+    /* gece bandi — her iki temada sabit */
+    --gece: #101413;
+    --gece-2: #19201e;
+    --gece-cizgi: #2b3532;
+    --gece-metin: #eef0ee;
+    --gece-metin-2: #a2ada9;
+    --gece-petrol: #58c2b2;
+    --kor: #e8763a;
+
+    --golge: 0 1px 2px rgba(23, 25, 27, 0.05), 0 10px 30px rgba(23, 25, 27, 0.06);
+    --golge-fis: 0 2px 6px rgba(0, 0, 0, 0.3), 0 22px 50px rgba(0, 0, 0, 0.35);
+
+    --o1: 0.75rem;
+    --o2: 0.875rem;
+    --o3: 1rem;
+    --o4: 1.1875rem;
+    --o5: 1.5rem;
+    --o6: clamp(1.9rem, 3.4vw, 2.6rem);
+    --o7: clamp(2.5rem, 5.6vw, 4rem);
+
+    --baslik: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+    --metin: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --makine: "IBM Plex Mono", "Consolas", ui-monospace, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --kagit: #0d1011;
+      --kagit-2: #141819;
+      --yuzey: #171c1d;
+      --murekkep: #ecebe6;
+      --murekkep-2: #b3b9ba;
+      --celik: #8a9195;
+      --cizgi: #272d2f;
+      --cizgi-koyu: #394143;
+      --petrol: #58c2b2;
+      --petrol-parlak: #78dccb;
+      --petrol-sis: #14302c;
+      --iyi: #5cb98a;
+      --iyi-sis: #16301f;
+      --uyari: #d9a72a;
+      --uyari-sis: #322709;
+      --golge: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --kagit: #0d1011;
+    --kagit-2: #141819;
+    --yuzey: #171c1d;
+    --murekkep: #ecebe6;
+    --murekkep-2: #b3b9ba;
+    --celik: #8a9195;
+    --cizgi: #272d2f;
+    --cizgi-koyu: #394143;
+    --petrol: #58c2b2;
+    --petrol-parlak: #78dccb;
+    --petrol-sis: #14302c;
+    --iyi: #5cb98a;
+    --iyi-sis: #16301f;
+    --uyari: #d9a72a;
+    --uyari-sis: #322709;
+    --golge: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--kagit);
+    color: var(--murekkep);
+    font-family: var(--metin);
+    font-size: var(--o3);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--baslik);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; }
+  a { color: inherit; }
+
+  .kap {
+    width: 100%;
+    max-width: 1140px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+
+  .etiket {
+    font-family: var(--makine);
+    font-size: var(--o1);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--celik);
+  }
+
+  :focus-visible { outline: 2px solid var(--petrol); outline-offset: 3px; }
+
+  /* ---------------- dugmeler ---------------- */
+
+  .dugme {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border-radius: 2px;
+    border: 1px solid var(--petrol);
+    background: var(--petrol);
+    color: #f6f7f6;
+    font-weight: 600;
+    font-size: var(--o2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .dugme:hover { background: var(--petrol-parlak); border-color: var(--petrol-parlak); }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .dugme { color: #0b1211; }
+  }
+  :root[data-theme="dark"] .dugme { color: #0b1211; }
+
+  .dugme-sade {
+    background: transparent;
+    border-color: var(--cizgi-koyu);
+    color: var(--murekkep);
+  }
+  .dugme-sade:hover { background: transparent; border-color: var(--petrol); color: var(--petrol); }
+
+  /* ---------------- ust cubuk ---------------- */
+
+  .ust {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 30;
+    background: var(--gece);
+    border-bottom: 1px solid var(--gece-cizgi);
+  }
+  .ust-ic {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 62px;
+    flex-wrap: wrap;
+  }
+  .marka {
+    font-family: var(--baslik);
+    font-weight: 800;
+    font-size: var(--o4);
+    letter-spacing: -0.035em;
+    color: var(--gece-metin);
+    margin-right: auto;
+  }
+  .marka span { color: var(--gece-petrol); }
+
+  .ust nav { display: flex; gap: 22px; font-size: var(--o2); color: var(--gece-metin-2); }
+  .ust nav a { text-decoration: none; }
+  .ust nav a:hover { color: var(--gece-metin); }
+  @media (max-width: 780px) { .ust nav { display: none; } }
+
+  .ust .dugme {
+    padding: 9px 16px;
+    background: transparent;
+    border-color: var(--gece-cizgi);
+    color: var(--gece-metin);
+  }
+  .ust .dugme:hover { background: var(--gece-petrol); border-color: var(--gece-petrol); color: #0b1211; }
+
+  /* ---------------- gece bandi / hero ---------------- */
+
+  .gece { background: var(--gece); color: var(--gece-metin); }
+
+  .hero { padding-block: clamp(46px, 7vw, 92px) clamp(40px, 6vw, 76px); }
+
+  .hero-izgara {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: clamp(32px, 5vw, 68px);
+    align-items: start;
+  }
+  @media (max-width: 920px) { .hero-izgara { grid-template-columns: minmax(0, 1fr); } }
+
+  .hero .etiket { color: var(--gece-petrol); }
+
+  .hero h1 {
+    font-size: var(--o7);
+    margin-block: 16px 0;
+    color: var(--gece-metin);
+  }
+  .hero h1 em { font-style: normal; color: var(--kor); }
+
+  .hero-alt {
+    margin-top: 22px;
+    font-size: var(--o4);
+    color: var(--gece-metin-2);
+    max-width: 38ch;
+  }
+
+  .hero-dugmeler { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero-dugmeler .dugme { background: var(--gece-petrol); border-color: var(--gece-petrol); color: #0b1211; }
+  .hero-dugmeler .dugme:hover { background: #7ad9c8; border-color: #7ad9c8; }
+  .hero-dugmeler .dugme-sade { background: transparent; border-color: var(--gece-cizgi); color: var(--gece-metin); }
+  .hero-dugmeler .dugme-sade:hover { background: transparent; border-color: var(--gece-petrol); color: var(--gece-petrol); }
+
+  .hero-kanit {
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 1px solid var(--gece-cizgi);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+  /* 4 rakam yan yana sigmazsa 2x2: hicbiri alt satirda yalniz kalmasin.
+     921-1040 px: hero iki sutunlu, sol sutun dar. 560 px alti: telefon. */
+  @media (min-width: 921px) and (max-width: 1040px) { .hero-kanit { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .hero-kanit { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .hero-kanit div b {
+    display: block;
+    font-family: var(--baslik);
+    font-size: var(--o5);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--gece-metin);
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-kanit div span { font-size: var(--o2); color: var(--gece-metin-2); }
+
+  /* ---------------- fis + durum ---------------- */
+
+  .fis-sutun { display: flex; flex-direction: column; gap: 14px; }
+
+  .fis-basi {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--makine);
+    font-size: var(--o1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gece-metin-2);
+  }
+
+  .fis {
+    background: #fbfaf6;
+    color: #14161a;
+    font-family: var(--makine);
+    font-size: clamp(0.56rem, 1.5vw, 0.73rem);
+    line-height: 1.5;
+    padding: 24px 18px 28px;
+    box-shadow: var(--golge-fis);
+    overflow-x: auto;
+    -webkit-mask:
+      radial-gradient(7px at 50% 0, #0000 98%, #000) 50% 0 / 14px 100% repeat-x,
+      radial-gradient(7px at 50% 100%, #0000 98%, #000) 50% 100% / 14px 100% repeat-x,
+      linear-gradient(#000, #000) 50% 50% / 100% calc(100% - 14px) no-repeat;
+    mask:
+      radial-gradient(7px at 50% 0, #0000 98%, #000) 50% 0 / 14px 100% repeat-x,
+      radial-gradient(7px at 50% 100%, #0000 98%, #000) 50% 100% / 14px 100% repeat-x,
+      linear-gradient(#000, #000) 50% 50% / 100% calc(100% - 14px) no-repeat;
+  }
+  .fis pre { margin: 0; white-space: pre; font: inherit; }
+
+  .durum {
+    border: 1px solid var(--gece-cizgi);
+    background: var(--gece-2);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .durum-ust { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .durum-ust .etiket { color: var(--gece-metin-2); }
+
+  .durum-satirlari { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+  .durum-satirlari li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--makine);
+    font-size: var(--o2);
+    color: var(--gece-metin);
+  }
+  .isik { width: 8px; height: 8px; border-radius: 50%; flex: none; background: #4cb37e; }
+  .isik-uyari { background: #d9a72a; }
+  .durum-deger { margin-left: auto; color: var(--gece-metin-2); }
+
+  .durum-sonuc {
+    font-size: var(--o2);
+    padding: 11px 13px;
+    border-left: 2px solid #4cb37e;
+    background: rgba(76, 179, 126, 0.1);
+    color: var(--gece-metin);
+  }
+  [data-cevrimici="hayir"] .durum-sonuc {
+    border-left-color: #d9a72a;
+    background: rgba(217, 167, 42, 0.11);
+  }
+
+  .anahtar {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--gece-cizgi);
+    background: transparent;
+    color: var(--gece-metin);
+    font-family: var(--metin);
+    font-size: var(--o2);
+    font-weight: 500;
+    padding: 7px 13px 7px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .anahtar:hover { border-color: var(--gece-petrol); color: var(--gece-petrol); }
+
+  .anahtar-ray {
+    width: 34px; height: 18px; border-radius: 999px;
+    background: #4cb37e; position: relative; flex: none;
+    transition: background 0.18s ease;
+  }
+  .anahtar-ray::after {
+    content: ""; position: absolute; inset: 2px auto 2px 2px;
+    width: 14px; border-radius: 50%; background: var(--gece);
+    transform: translateX(16px); transition: transform 0.18s ease;
+  }
+  [data-cevrimici="hayir"] .anahtar-ray { background: #4a5450; }
+  [data-cevrimici="hayir"] .anahtar-ray::after { transform: translateX(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anahtar-ray, .anahtar-ray::after { transition: none; }
+  }
+
+  /* ---------------- bolumler ---------------- */
+
+  section { scroll-margin-top: 78px; }
+  .bolum { padding-block: clamp(52px, 7vw, 96px); }
+  .bolum-cizgili { border-top: 1px solid var(--cizgi); }
+  .bolum-koyu { background: var(--kagit-2); border-top: 1px solid var(--cizgi); }
+
+  .bolum-basi { max-width: 60ch; margin-bottom: clamp(30px, 4vw, 48px); }
+  .bolum-basi h2 { font-size: var(--o6); margin-block: 12px 0; }
+  .bolum-basi p { margin-top: 15px; color: var(--murekkep-2); }
+
+  /* ---------------- yetenek seridi ---------------- */
+
+  .serit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--cizgi);
+    border-bottom: 1px solid var(--cizgi);
+  }
+  .serit-oge {
+    background: var(--kagit);
+    padding: 26px 22px;
+    display: grid;
+    gap: 6px;
+    align-content: start;
+  }
+  .serit-oge h3 { font-size: var(--o3); font-family: var(--metin); font-weight: 600; letter-spacing: 0; }
+  .serit-oge p { font-size: var(--o2); color: var(--celik); }
+
+  /* ---------------- senaryolar ---------------- */
+
+  .senaryolar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(262px, 1fr));
+    gap: 1px;
+    background: var(--cizgi);
+    border: 1px solid var(--cizgi);
+  }
+  .senaryo { background: var(--yuzey); padding: 26px 22px 28px; display: flex; flex-direction: column; gap: 12px; }
+  .senaryo h3 { font-size: var(--o5); font-weight: 600; }
+  .senaryo p { color: var(--murekkep-2); font-size: var(--o2); }
+  .senaryo-sonuc {
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px dashed var(--cizgi-koyu);
+    font-family: var(--makine);
+    font-size: var(--o2);
+    color: var(--iyi);
+    display: flex; gap: 8px; align-items: baseline;
+  }
+
+  /* ---------------- moduller ---------------- */
+
+  .moduller { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+
+  .modul {
+    border: 1px solid var(--cizgi);
+    background: var(--yuzey);
+    padding: 26px 24px;
+    display: flex; flex-direction: column; gap: 16px;
+    box-shadow: var(--golge);
+  }
+  .modul-ana { border-color: var(--petrol); }
+
+  .modul-basi { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .modul-basi h3 { font-size: var(--o5); }
+
+  .rozet {
+    font-family: var(--makine);
+    font-size: var(--o1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    margin-left: auto;
+  }
+  .rozet-yayinda { background: var(--iyi-sis); color: var(--iyi); }
+  .rozet-yakinda { background: var(--uyari-sis); color: var(--uyari); }
+
+  .modul > p { font-size: var(--o2); color: var(--murekkep-2); }
+
+  .modul ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .modul li { display: flex; gap: 10px; font-size: var(--o2); color: var(--murekkep-2); }
+  .modul li i { font-style: normal; font-family: var(--makine); flex: none; width: 1.1em; color: var(--petrol); }
+  .modul-yakinda li i { color: var(--celik); }
+  .modul li b { color: var(--murekkep); font-weight: 600; }
+
+  /* ---------------- roller ---------------- */
+
+  .roller { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+  .rol { display: flex; flex-direction: column; gap: 15px; }
+  .rol-basi {
+    display: flex; align-items: baseline; gap: 10px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--murekkep);
+  }
+  .rol-basi h3 { font-size: var(--o4); }
+  .rol-basi .etiket { margin-left: auto; }
+  .rol ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 11px; }
+  .rol li { font-size: var(--o2); color: var(--murekkep-2); padding-left: 18px; position: relative; }
+  .rol li::before {
+    content: ""; position: absolute; left: 0; top: 0.62em;
+    width: 7px; height: 1px; background: var(--petrol);
+  }
+  .rol li b { color: var(--murekkep); font-weight: 600; }
+
+  /* ---------------- ayrintilar ---------------- */
+
+  .ayrintilar { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px 44px; }
+  .ayrinti { display: grid; gap: 9px; align-content: start; }
+  .ayrinti h3 { font-size: var(--o3); font-weight: 600; font-family: var(--metin); letter-spacing: 0; }
+  .ayrinti p { font-size: var(--o2); color: var(--murekkep-2); }
+  .ayrinti .kanit {
+    font-family: var(--makine); font-size: var(--o1);
+    color: var(--petrol); background: var(--petrol-sis);
+    padding: 6px 10px; justify-self: start;
+  }
+
+  /* ---------------- teknik tablo ---------------- */
+
+  .tablo-sar { overflow-x: auto; border: 1px solid var(--cizgi); background: var(--yuzey); }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: var(--o2); }
+  th, td { text-align: left; padding: 13px 18px; border-bottom: 1px solid var(--cizgi); vertical-align: top; }
+  thead th {
+    font-family: var(--makine); font-size: var(--o1);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--celik); font-weight: 500;
+    background: var(--kagit-2);
+  }
+  tbody th { font-weight: 600; width: 34%; color: var(--murekkep); }
+  td { color: var(--murekkep-2); font-family: var(--makine); }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+
+  /* ---------------- kapanis ---------------- */
+
+  .kapanis { padding-block: clamp(54px, 7vw, 92px); }
+  .kapanis-izgara {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+  }
+  @media (max-width: 860px) { .kapanis-izgara { grid-template-columns: minmax(0, 1fr); } }
+
+  .kapanis .etiket { color: var(--gece-petrol); }
+  .kapanis h2 { font-size: var(--o6); color: var(--gece-metin); margin-top: 12px; max-width: 18ch; }
+  .kapanis p { margin-top: 16px; color: var(--gece-metin-2); max-width: 46ch; }
+  .kapanis .dugme {
+    margin-top: 28px;
+    background: var(--gece-petrol); border-color: var(--gece-petrol); color: #0b1211;
+  }
+  .kapanis .dugme:hover { background: #7ad9c8; border-color: #7ad9c8; }
+
+  .kurulum { border: 1px solid var(--gece-cizgi); background: var(--gece-2); padding: 22px; display: grid; gap: 16px; }
+  .kurulum h3 { font-size: var(--o4); color: var(--gece-metin); }
+  .kurulum ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; counter-reset: adim; }
+  .kurulum li {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px;
+    align-items: start;
+    font-size: var(--o2); color: var(--gece-metin-2);
+  }
+  .kurulum li::before {
+    counter-increment: adim;
+    content: counter(adim, decimal-leading-zero);
+    font-family: var(--makine); font-size: var(--o1);
+    color: var(--gece-petrol); line-height: 1.7;
+  }
+  /* Baslik ve aciklama tek hucrede kalsin: aksi halde duz metin
+     ayri bir izgara hucresine dusup satiri bozuyor. */
+  .kurulum li span { display: block; }
+  .kurulum li b { display: block; color: var(--gece-metin); font-weight: 600; }
+
+  footer {
+    padding-block: 30px 40px;
+    border-top: 1px solid var(--gece-cizgi);
+    display: flex; flex-wrap: wrap; gap: 12px 26px; align-items: baseline;
+    font-size: var(--o2); color: var(--gece-metin-2);
+  }
+  footer .marka { font-size: var(--o3); margin-right: 0; }
+  footer .adres { margin-left: auto; font-family: var(--makine); color: var(--gece-metin); }
+</style>
+</head>
+<body>
+<header class="ust">
+  <div class="kap ust-ic">
+    <div class="marka">Kuver<span>POS</span></div>
+    <nav>
+      <a href="#kesinti">Kesintide</a>
+      <a href="#moduller">Modüller</a>
+      <a href="#roller">Ekranlar</a>
+      <a href="#ayrintilar">Ayrıntılar</a>
+      <a href="#teknik">Teknik</a>
+    </nav>
+    <a class="dugme" href="#iletisim">Demo talep edin</a>
+  </div>
+</header>
+
+<main>
+  <!-- ============================ HERO ============================ -->
+  <section class="gece hero">
+    <div class="kap hero-izgara">
+      <div>
+        <p class="etiket">Çok şubeli restoran otomasyon sistemi</p>
+        <h1>İnternet gitti.<br>Adisyon <em>durmadı.</em></h1>
+        <p class="hero-alt">
+          KuverPOS şubede çalışır, bulutta değil. Kasa bilgisayarı aynı zamanda şube
+          sunucusudur — hat koptuğunda sipariş de, mutfak fişi de, ödeme de olduğu
+          yerde devam eder.
+        </p>
+
+        <div class="hero-dugmeler">
+          <a class="dugme" href="#iletisim">Demo talep edin</a>
+          <a class="dugme dugme-sade" href="#kesinti">Kesintide ne oluyor?</a>
+        </div>
+
+        <div class="hero-kanit">
+          <div><b>%100</b><span>internetsiz çalışma</span></div>
+          <div><b>1→100</b><span>şubeye kadar tek sistem</span></div>
+          <div><b>7/24</b><span>Windows hizmeti olarak</span></div>
+          <div><b>36</b><span>ayrı ayrı verilen yetki</span></div>
+        </div>
+      </div>
+
+      <div class="fis-sutun" id="panel" data-cevrimici="evet">
+        <div class="fis-basi">
+          <span>Mutfak yazıcısı</span>
+          <span>21:04</span>
+        </div>
+
+        <div class="fis">
+<pre>                     MUTFAK
+          YENI
+------------------------------------------------
+ 17.09.2026 21:04
+ GARSON NO : 12
+ MASA : BAHÇE-4
+ FIS NO : 000318
+------------------------------------------------
+ 2 x KUZU İNCİK
+ 1 x IZGARA LEVREK
+     limon ayrı
+ 1 x ŞEFİN SALATASI
+------------------------------------------------</pre>
+        </div>
+
+        <div class="durum">
+          <div class="durum-ust">
+            <span class="etiket">Şube durumu · canlı</span>
+            <button class="anahtar" id="anahtar" type="button" aria-pressed="false">
+              <span class="anahtar-ray" aria-hidden="true"></span>
+              <span id="anahtar-yazi">İnterneti kes</span>
+            </button>
+          </div>
+
+          <ul class="durum-satirlari">
+            <li>
+              <span class="isik" id="isik-bulut" aria-hidden="true"></span>
+              Bulut bağlantısı
+              <span class="durum-deger" id="deger-bulut">bağlı</span>
+            </li>
+            <li>
+              <span class="isik" aria-hidden="true"></span>
+              Şube sunucusu
+              <span class="durum-deger">çalışıyor</span>
+            </li>
+            <li>
+              <span class="isik" aria-hidden="true"></span>
+              Terminaller
+              <span class="durum-deger">4 / 4 bağlı</span>
+            </li>
+            <li>
+              <span class="isik" aria-hidden="true"></span>
+              Yazdırma kuyruğu
+              <span class="durum-deger">boş</span>
+            </li>
+          </ul>
+
+          <p class="durum-sonuc" id="sonuc" role="status">
+            Her şey yerinde. Şube verisi buluta anlık akıyor.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== YETENEK ŞERİDİ ======================== -->
+  <div class="serit">
+    <div class="serit-oge">
+      <h3>Yerel öncelikli mimari</h3>
+      <p>Menü, fiyat, yetki ve adisyon şubenin kendi veritabanında durur.</p>
+    </div>
+    <div class="serit-oge">
+      <h3>Anlık terminal güncellemesi</h3>
+      <p>Bir terminalde açılan masa diğer dördünde aynı anda görünür.</p>
+    </div>
+    <div class="serit-oge">
+      <h3>Kalıcı yazdırma kuyruğu</h3>
+      <p>Fiş belleğe değil diske yazılır; yazıcı düzelince sırayla basılır.</p>
+    </div>
+    <div class="serit-oge">
+      <h3>Silinemez işlem günlüğü</h3>
+      <p>Kim, ne zaman, hangi terminalden, önceki ve sonraki değer.</p>
+    </div>
+  </div>
+
+  <!-- ========================= KESİNTİ ============================ -->
+  <section class="bolum" id="kesinti">
+    <div class="kap">
+      <div class="bolum-basi">
+        <p class="etiket">Arıza anı</p>
+        <h2>Bozulduğunda ne oluyor?</h2>
+        <p>
+          Restoran yazılımı seçerken asıl soru "neler yapıyor" değil, "bozulunca ne
+          oluyor" sorusudur. KuverPOS üçünün de cevabını sisteme yazılı olarak verir.
+        </p>
+      </div>
+
+      <div class="senaryolar">
+        <article class="senaryo">
+          <p class="etiket">Arıza 01</p>
+          <h3>İnternet gitti</h3>
+          <p>Modem öldü, fiber kesildi, hat düştü. Bulut tabanlı sistemlerde adisyon ekranı açılmaz.</p>
+          <p>
+            KuverPOS'ta hiçbir şey değişmez: menü, masa, fiyat ve yetkiler zaten
+            kasadaki veritabanında. Buluta gidecek kayıtlar sıraya girer, hat gelince
+            kendiliğinden akar.
+          </p>
+          <p class="senaryo-sonuc"><span aria-hidden="true">→</span> Şube tam kapasite çalışır</p>
+        </article>
+
+        <article class="senaryo">
+          <p class="etiket">Arıza 02</p>
+          <h3>Kasa ekranı kapandı</h3>
+          <p>Biri yanlışlıkla kapattı, program çöktü, bilgisayar yeniden başladı.</p>
+          <p>
+            Sunucu kasa programının içinde değil, ayrı bir <b>Windows hizmeti</b>
+            olarak çalışır. Ekran kapansa bile terminaller sipariş almaya devam eder.
+            Çökme sonrası açık masalar, kalemler ve fiş kuyruğu olduğu yerden sürer.
+          </p>
+          <p class="senaryo-sonuc"><span aria-hidden="true">→</span> Tek satır veri kaybı yok</p>
+        </article>
+
+        <article class="senaryo">
+          <p class="etiket">Arıza 03</p>
+          <h3>Mutfak yazıcısı bozuldu</h3>
+          <p>Kâğıt bitti, kapak açık kaldı, kablo çıktı. Çoğu sistemde fiş kaybolur, sipariş mutfağa hiç ulaşmaz.</p>
+          <p>
+            Fişler kalıcı kuyrukta bekler. Yazıcıya önce durum sorulur; hazır değilse
+            boşuna gönderilmez. Tanımlıysa <b>yedek yazıcı</b> devreye girer.
+          </p>
+          <p class="senaryo-sonuc"><span aria-hidden="true">→</span> Yazıcı düzelince sırayla basılır</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= MODÜLLER =========================== -->
+  <section class="bolum bolum-koyu" id="moduller">
+    <div class="kap">
+      <div class="bolum-basi">
+        <p class="etiket">Ürün ailesi</p>
+        <h2>İki modül, tek veri</h2>
+        <p>
+          Şube modülü tek başına eksiksiz çalışır — merkez modülü olmadan da. Zincir
+          büyüdüğünde üzerine merkez eklenir, şubede kurulum değişmez.
+        </p>
+      </div>
+
+      <div class="moduller">
+        <article class="modul modul-ana">
+          <div class="modul-basi">
+            <h3>KuverPOS Şube</h3>
+            <span class="rozet rozet-yayinda">Yayında</span>
+          </div>
+          <p>Salonun, mutfağın ve kasanın tamamı. İnternet olmadan da eksiksiz çalışır.</p>
+          <ul>
+            <li><i>✓</i> PIN ile giriş, roller ve <b>tek tek seçilebilen 36 yetki</b></li>
+            <li><i>✓</i> Dört seviyeli menü, salon ve masa düzeni</li>
+            <li><i>✓</i> Adisyon: iptal, ikram, indirim, masa aktarma, birleştirme, ürün taşıma</li>
+            <li><i>✓</i> Üretim noktası fiş yönlendirme, kalıcı kuyruk, yedek yazıcı</li>
+            <li><i>✓</i> Parçalı ödeme, POS cihazı seçimi, para üstü, cari hesap</li>
+            <li><i>✓</i> Garson teslimi, kör sayım, X ve Z raporu, kilitli gün sonu</li>
+            <li><i>✓</i> Windows hizmeti, otomatik yedekleme, çökme sonrası devam</li>
+          </ul>
+        </article>
+
+        <article class="modul modul-yakinda">
+          <div class="modul-basi">
+            <h3>KuverPOS Merkez</h3>
+            <span class="rozet rozet-yakinda">Yakında</span>
+          </div>
+          <p>Zincirin tamamını tek panelden görme ve yönetme katmanı. Geliştirme sürüyor.</p>
+          <ul>
+            <li><i>·</i> Bulut senkronu ve merkez yönetim paneli</li>
+            <li><i>·</i> Patron mobil uygulaması — grafik yok, rakamın altında "Dün X TL"</li>
+            <li><i>·</i> Merkezden inen menü, fiyat ve kampanya; şubeye özel fiyat</li>
+            <li><i>·</i> Stok, reçete ve maliyet takibi</li>
+            <li><i>·</i> Yazarkasa (ÖKC) entegrasyonu</li>
+            <li><i>·</i> Paket servis platformu bağlantıları</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== ROLLER =========================== -->
+  <section class="bolum bolum-cizgili" id="roller">
+    <div class="kap">
+      <div class="bolum-basi">
+        <p class="etiket">Ekranlar</p>
+        <h2>Üç ayrı ekran, tek sistem</h2>
+        <p>
+          Garson hızlı olmak ister, müdür kontrol ister, patron rakam ister. Üçüne
+          aynı ekranı vermek üçünü de yavaşlatır.
+        </p>
+      </div>
+
+      <div class="roller">
+        <div class="rol">
+          <div class="rol-basi"><h3>Garson</h3><span class="etiket">Tablet</span></div>
+          <ul>
+            <li><b>PIN ile giriş</b> — kart yok, şifre ezberi yok. Yanlış denemede terminal kilitlenir</li>
+            <li><b>Masa planı</b> — boş, dolu, hesap istendi. Değişen masa tüm terminallerde anında görünür</li>
+            <li><b>Dört seviyeli menü</b> — ana grup, alt grup, kategori, ürün. Tükenen ürün seçilemez</li>
+            <li><b>"Gönder" demeden mutfağa gitmez</b> — yanlış girilen ürün mutfağa yansımadan silinir</li>
+            <li><b>Parçalı ödeme</b> — nakit, kart, yemek kartı, cari. Para üstü ekranda hesaplanır</li>
+          </ul>
+        </div>
+
+        <div class="rol">
+          <div class="rol-basi"><h3>Müdür</h3><span class="etiket">Kasa</span></div>
+          <ul>
+            <li><b>Tek tek seçilen yetkiler</b> — 36 ayrı yetki; role, şubeye ve kişiye göre ayarlanır</li>
+            <li><b>Onay akışı</b> — iptal, ikram ve indirim "yönetici onayı ister" olarak işaretlenebilir</li>
+            <li><b>Garson teslimi</b> — her garson kendi tahsilatını sayar. İsteğe bağlı <b>kör sayım</b>: beklenen tutarı görmeden</li>
+            <li><b>X ve Z raporu</b> — gün içi kontrol ve gün sonu. Gün sonu alınınca gün kilitlenir</li>
+            <li><b>Güvenli kapatma</b> — açık masa veya alınmamış gün sonu varsa program uyarmadan kapanmaz</li>
+          </ul>
+        </div>
+
+        <div class="rol">
+          <div class="rol-basi"><h3>Patron</h3><span class="etiket">Merkez</span></div>
+          <ul>
+            <li><b>Silinemez işlem günlüğü</b> — kim, ne zaman, hangi terminalden, önceki ve sonraki değer</li>
+            <li><b>Fiziksel silme yok</b> — iptal edilen adisyon kaybolmaz, iptal olarak durur</li>
+            <li><b>İş günü mantığı</b> — gece 02:00'deki satış önceki günün cirosuna yazılır</li>
+            <li><b>Şubeden buluta tek yön</b> — merkez şubenin satış verisini değiştiremez, yalnızca okur</li>
+            <li><b>Çok firmalı yapı</b> — birden fazla marka, bölge ve şube aynı kurulumda</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= AYRINTILAR ========================= -->
+  <section class="bolum bolum-koyu" id="ayrintilar">
+    <div class="kap">
+      <div class="bolum-basi">
+        <p class="etiket">Ayrıntılar</p>
+        <h2>Farkı burada anlarsınız</h2>
+        <p>Bunlar demo sırasında sorulmaz; üçüncü ayda canınızı yakar. KuverPOS baştan böyle kuruldu.</p>
+      </div>
+
+      <div class="ayrintilar">
+        <div class="ayrinti">
+          <h3>Fiş sırası tartışmaya kapalı</h3>
+          <p>
+            Şef önce saati, sonra garson numarasını, sonra masayı görür. Sonradan
+            eklenen ürünler için ayrı bir "EK SİPARİŞ" başlığı basılmaz — yalnızca
+            yeni ürünler çıkar, eskisi tekrar basılmaz.
+          </p>
+          <p class="kanit">tarih-saat → garson no → masa → fiş no → sipariş</p>
+        </div>
+
+        <div class="ayrinti">
+          <h3>Türkçe harfler doğru basılır</h3>
+          <p>
+            Fiş yazıcılarında "ŞEFİN SALATASI" çoğu zaman "SEFIN SALATASI" çıkar. KuverPOS
+            fişi PC857 Türkçe kod sayfasıyla gönderir ve büyük harfe çevirirken
+            Türkçe kuralını uygular: i → İ, ı → I.
+          </p>
+          <p class="kanit">PC857 · ESC/POS</p>
+        </div>
+
+        <div class="ayrinti">
+          <h3>Parada ondalık yok</h3>
+          <p>
+            Para kuruş cinsinden tam sayı tutulur; 125,50 TL sistemde 12550'dir.
+            Ondalıklı hesap yapılmaz — bin adisyonluk günün sonunda kasa "1 kuruş"
+            tutmazlık yapmaz.
+          </p>
+          <p class="kanit">125,50 TL = 12550</p>
+        </div>
+
+        <div class="ayrinti">
+          <h3>Gün gece yarısında bitmez</h3>
+          <p>
+            İş günü şube bazında belirlenir — örneğin 06:00. Gece 01:30'da kapanan
+            masa önceki günün raporuna yazılır. Cumartesi cirosu pazar sabahına
+            karışmaz.
+          </p>
+          <p class="kanit">iş günü başlangıcı: 06:00</p>
+        </div>
+
+        <div class="ayrinti">
+          <h3>Aynı masaya iki terminal</h3>
+          <p>
+            İki garson aynı adisyona aynı anda dokunursa sistem ikincisini uyarır ve
+            güncel hali gösterir. Sessizce üzerine yazıp ürün kaybetmez.
+          </p>
+          <p class="kanit">sürüm kontrolü</p>
+        </div>
+
+        <div class="ayrinti">
+          <h3>Kuver, ikram, indirim</h3>
+          <p>
+            Kuver kişi başı sabit tutar olarak otomatik eklenir. İkram ciroya girmez,
+            ayrı toplanır. İndirim yüzde ya da tutar olabilir; hesaptan büyük indirim
+            reddedilir.
+          </p>
+          <p class="kanit">ikram ≠ ciro</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== TEKNİK ============================ -->
+  <section class="bolum bolum-cizgili" id="teknik">
+    <div class="kap">
+      <div class="bolum-basi">
+        <p class="etiket">Teknik</p>
+        <h2>Neye ihtiyacınız var?</h2>
+        <p>
+          Özel donanım satmıyoruz. Piyasadaki standart ağ termal yazıcı ve
+          tabletlerle çalışır.
+        </p>
+      </div>
+
+      <div class="tablo-sar">
+        <table>
+          <thead>
+            <tr><th scope="col">Bileşen</th><th scope="col">Gereken</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Kasa bilgisayarı</th>
+              <td>Windows · şube sunucusu olarak da çalışır · ayrı sunucu gerekmez</td>
+            </tr>
+            <tr>
+              <th scope="row">Terminaller</th>
+              <td>Tablet veya dokunmatik ekran · tarayıcıdan açılır · kurulum yok</td>
+            </tr>
+            <tr>
+              <th scope="row">Yazıcılar</th>
+              <td>80 mm ağ (Ethernet) termal · ESC/POS · PC857 Türkçe</td>
+            </tr>
+            <tr>
+              <th scope="row">Ağ</th>
+              <td>Şube içi yerel ağ · internet zorunlu değil</td>
+            </tr>
+            <tr>
+              <th scope="row">Veri</th>
+              <td>Şubede yerel veritabanı · otomatik yedekleme · saklama süresi ayarlanır</td>
+            </tr>
+            <tr>
+              <th scope="row">Banka POS</th>
+              <td>Manuel mod · tutar cihaza elle girilir · cihaz bazında raporlanır</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== KAPANIŞ =========================== -->
+  <section class="gece kapanis" id="iletisim">
+    <div class="kap kapanis-izgara">
+      <div>
+        <p class="etiket">İletişim</p>
+        <h2>Salonunuzda görün</h2>
+        <p>
+          Kendi menünüz, kendi masa düzeniniz ve kendi yazıcılarınızla kurulu bir
+          demo hazırlıyoruz. Zincirinizin kaç şubesi olduğunu ve kaç terminal
+          kullandığınızı yazmanız yeterli.
+        </p>
+        <a class="dugme" href="mailto:destek@kuverpos.com?subject=KuverPOS%20demo%20talebi">
+          destek@kuverpos.com
+        </a>
+      </div>
+
+      <div class="kurulum">
+        <h3>Kurulum nasıl ilerler?</h3>
+        <ol>
+          <li><span><b>Görüşme</b>Şube sayısı, terminal ve yazıcı düzeniniz konuşulur.</span></li>
+          <li><span><b>Menü aktarımı</b>Mevcut menünüz dört seviyeli yapıya taşınır, fiyatlar ve KDV oranları girilir.</span></li>
+          <li><span><b>Kurulum</b>Kasa bilgisayarına hizmet kurulur, terminaller ve yazıcılar tanımlanır.</span></li>
+          <li><span><b>Eğitim</b>Garson tarafı bir vardiya, müdür tarafı yarım gün sürer.</span></li>
+          <li><span><b>Devreye alma</b>İlk hafta kâğıt adisyon yedekte tutulur, ikinci hafta kaldırılır.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="gece">
+  <footer class="kap">
+    <div class="marka">Kuver<span>POS</span></div>
+    <span>Çok şubeli restoran otomasyon sistemi</span>
+    <span class="adres">kuverpos.com</span>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var panel = document.getElementById('panel');
+    var anahtar = document.getElementById('anahtar');
+    var yazi = document.getElementById('anahtar-yazi');
+    var isik = document.getElementById('isik-bulut');
+    var deger = document.getElementById('deger-bulut');
+    var sonuc = document.getElementById('sonuc');
+
+    if (!panel || !anahtar) return;
+
+    var cevrimdisi = false;
+
+    anahtar.addEventListener('click', function () {
+      cevrimdisi = !cevrimdisi;
+
+      panel.setAttribute('data-cevrimici', cevrimdisi ? 'hayir' : 'evet');
+      anahtar.setAttribute('aria-pressed', cevrimdisi ? 'true' : 'false');
+      yazi.textContent = cevrimdisi ? 'İnterneti geri ver' : 'İnterneti kes';
+
+      if (cevrimdisi) {
+        isik.classList.add('isik-uyari');
+        deger.textContent = 'yok — 12 kayıt kuyrukta';
+        sonuc.innerHTML =
+          'Şube çalışmaya devam ediyor. Sipariş, mutfak fişi ve ödeme etkilenmedi; ' +
+          'buluta gidecek 12 kayıt kasada bekliyor ve hat gelince kendiliğinden gidecek. ' +
+          '<b>Veri kaybolmaz.</b>';
+      } else {
+        isik.classList.remove('isik-uyari');
+        deger.textContent = 'bağlı';
+        sonuc.textContent = 'Her şey yerinde. Şube verisi buluta anlık akıyor.';
+      }
+    });
+  })();
+</script>
+</body>
+</html>
